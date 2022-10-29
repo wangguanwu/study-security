@@ -1,21 +1,15 @@
 package com.wgw.firstlogin.config;
 
-import com.wgw.firstlogin.service.MyUserDetailService;
+import com.wgw.firstlogin.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import javax.annotation.Resource;
 
 
 /**
@@ -24,8 +18,10 @@ import java.util.List;
  **/
 
 @Configuration
-public class WebSecurityConfiguration    {
+public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter  {
 
+    @Resource
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,24 +29,20 @@ public class WebSecurityConfiguration    {
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        String password = passwordEncoder().encode("123456");
-        auth.inMemoryAuthentication()
-                .withUser("guanwu")
-                .password(password)
-                .roles("admin")
-                .and()
-                .withUser("fox")
-                .password(password)
-                .roles("user");
+        auth.userDetailsService(userService);
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        String pwd = passwordEncoder().encode("123");
-        AuthenticationManagerBuilder authenticationManagerBuilder = new AuthenticationManagerBuilder();
-        httpSecurity.authenticationManager(Au)
-        return httpSecurity.authenticationManager(manager).
-                build();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.formLogin()
+                .loginPage("/login.html")
+                .loginProcessingUrl("/user/login")
+                .defaultSuccessUrl("/admin/index")
+                .and().authorizeRequests()
+                .antMatchers("/user/login", "/login.html").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable();
 
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
  * @created on 2022-10-28 14:21:14
  **/
 
-//@Service
+@Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
