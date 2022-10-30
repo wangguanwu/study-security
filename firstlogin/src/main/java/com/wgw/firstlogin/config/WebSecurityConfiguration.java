@@ -1,7 +1,5 @@
 package com.wgw.firstlogin.config;
 
-import com.wgw.firstlogin.handler.MyAuthenticationFailureHandler;
-import com.wgw.firstlogin.handler.MyAuthenticationSuccessHandler;
 import com.wgw.firstlogin.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -38,15 +37,25 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter  {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login.html")
-                .successHandler(new MyAuthenticationSuccessHandler("/main.html"))
-                .failureHandler(new MyAuthenticationFailureHandler("/error.html"))
+//                .successHandler(new MyAuthenticationSuccessHandler("/main.html"))
+//                .successHandler(new MyAuthenticationSuccessHandler("/admin/index"))
+//                .failureHandler(new MyAuthenticationFailureHandler("/error.html"))
                 .loginProcessingUrl("/user/login")
-//                .defaultSuccessUrl("/admin/index")
+                .defaultSuccessUrl("/main.html")
                 .and().authorizeRequests()
-                .antMatchers("/user/login", "/login.html", "/error.html").permitAll()
+                .antMatchers("/user/login", "/login.html", "/error.html", "/session/invalid").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
 
+        http.sessionManagement()
+                .invalidSessionUrl("/session/invalid")
+                .maximumSessions(1)
+                .expiredSessionStrategy(event -> {
+                    HttpServletResponse response = event.getResponse();
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().println("你已被挤兑下线");
+                });
+//                .maxSessionsPreventsLogin(true);
     }
 }
