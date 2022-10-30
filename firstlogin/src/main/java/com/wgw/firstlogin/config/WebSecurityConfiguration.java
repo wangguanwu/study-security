@@ -1,5 +1,7 @@
 package com.wgw.firstlogin.config;
 
+import com.wgw.firstlogin.handler.MyAuthenticationFailureHandler;
+import com.wgw.firstlogin.handler.MyAuthenticationSuccessHandler;
 import com.wgw.firstlogin.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,10 +38,12 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter  {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login.html")
+                .successHandler(new MyAuthenticationSuccessHandler("/main.html"))
+                .failureHandler(new MyAuthenticationFailureHandler("/error.html"))
                 .loginProcessingUrl("/user/login")
-                .defaultSuccessUrl("/admin/index")
+//                .defaultSuccessUrl("/admin/index")
                 .and().authorizeRequests()
-                .antMatchers("/user/login", "/login.html").permitAll()
+                .antMatchers("/user/login", "/login.html", "/error.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
