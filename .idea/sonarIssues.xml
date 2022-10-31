@@ -43,7 +43,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/firstlogin/src/main/java/com/wgw/firstlogin/config/CrsfWebSecurityConfiguration.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/firstlogin/src/main/java/com/wgw/firstlogin/config/WebSecurityConfiguration.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/firstlogin/src/main/java/com/wgw/firstlogin/controller/LoginController.java">
           <value>
             <set />
           </value>
@@ -89,6 +99,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/firstlogin/src/main/resources/application.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/firstlogin/src/main/resources/static/login.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/firstlogin/src/main/resources/templates/login.html">
           <value>
             <set />
           </value>
