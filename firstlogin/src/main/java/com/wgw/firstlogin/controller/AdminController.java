@@ -24,7 +24,11 @@ public class AdminController {
         return "redirect:/main.html";
     }
 
-
+    @RequestMapping("/demo")
+    @ResponseBody
+    public String demo(){
+        return "demo: " + getUsername() + " 登录成功！！！";
+    }
 
     @GetMapping("/index")
     @ResponseBody

@@ -1,11 +1,13 @@
 package com.wgw.firstlogin.config;
 
+import com.wgw.firstlogin.handler.MyAccessDeniedHandler;
 import com.wgw.firstlogin.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,7 +31,10 @@ public class WebSecurityConfiguration2 extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.inMemoryAuthentication()
+                .withUser("fox")
+                .password(passwordEncoder().encode("123456"))
+                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 
     @Override
@@ -37,13 +42,17 @@ public class WebSecurityConfiguration2 extends WebSecurityConfigurerAdapter {
         http.formLogin();
 
         http.authorizeRequests()
-                .antMatchers("/admin/index").permitAll()
+                .antMatchers("/admin/index").hasAuthority("admin")
+                .antMatchers("/admin/demo").hasAuthority("user")
 //                .antMatchers("/**/*.jpeg").permitAll()
 //                .regexMatchers(".+[.]jp[e]*g").permitAll()
 //                .mvcMatchers("/admin/index").servletPath("/web").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
+
+        http.exceptionHandling()
+                .accessDeniedHandler(new MyAccessDeniedHandler());
 
 
     }
