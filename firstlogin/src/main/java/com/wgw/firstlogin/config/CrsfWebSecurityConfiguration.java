@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @created on 2022-10-31 16:17:50
  **/
 
-@Configuration
+//@Configuration
 public class CrsfWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override

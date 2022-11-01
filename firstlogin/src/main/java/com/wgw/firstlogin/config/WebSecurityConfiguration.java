@@ -25,10 +25,10 @@ import javax.sql.DataSource;
 //@Configuration
 public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter  {
 
-    @Resource
+//    @Resource
     private UserService userService;
 
-    @Bean
+//    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -71,7 +71,7 @@ public class WebSecurityConfiguration  extends WebSecurityConfigurerAdapter  {
     @Resource
     private DataSource dataSource;
 
-    @Bean
+//    @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);

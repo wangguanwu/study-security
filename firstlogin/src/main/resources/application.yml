@@ -15,3 +15,8 @@ spring:
       connection-timeout: 30000
       connection-test-query: SELECT 1
 
+
+#  mvc:
+#    servlet:
+#      path: /web
+
