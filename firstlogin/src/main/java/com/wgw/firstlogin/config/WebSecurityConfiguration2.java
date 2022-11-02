@@ -5,6 +5,7 @@ import com.wgw.firstlogin.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author guanwu
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  **/
 
 @Configuration
+@EnableGlobalMethodSecurity(jsr250Enabled = true, securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfiguration2 extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -34,7 +35,7 @@ public class WebSecurityConfiguration2 extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("fox")
                 .password(passwordEncoder().encode("123456"))
-                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList("admin,user,ROLE_admin"));
     }
 
     @Override
@@ -42,8 +43,8 @@ public class WebSecurityConfiguration2 extends WebSecurityConfigurerAdapter {
         http.formLogin();
 
         http.authorizeRequests()
-                .antMatchers("/admin/index").hasAuthority("admin")
-                .antMatchers("/admin/demo").hasAuthority("user")
+//                .antMatchers("/admin/index").hasAuthority("admin")
+//                .antMatchers("/admin/demo").hasAuthority("user")
 //                .antMatchers("/**/*.jpeg").permitAll()
 //                .regexMatchers(".+[.]jp[e]*g").permitAll()
 //                .mvcMatchers("/admin/index").servletPath("/web").permitAll()
